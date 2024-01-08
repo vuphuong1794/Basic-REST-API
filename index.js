@@ -5,8 +5,11 @@ var bodyParser = require("body-parser");
 const cors = require("cors");
 const app = express();
 const mongoose = require("mongoose");
+const AuthorRoute = require("./routes/author");
+const BookRoute = require("./routes/book");
 
 dotenv.config();
+
 //connect database
 mongoose.connect(process.env.MONGODB_URL, () => {
   console.log("connect to mongodb");
@@ -16,9 +19,8 @@ app.use(bodyParser.json({ limit: "50mb" }));
 app.use(cors());
 app.use(morgan("common"));
 
-app.get("/api", (req, res) => {
-  res.status(200).json("hello");
-});
+app.use("/v1/author", AuthorRoute);
+app.use("/v1/book", BookRoute);
 
 app.listen(8000, () => {
   console.log("server is running...");
